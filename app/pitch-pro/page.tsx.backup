@@ -1,0 +1,1015 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { ArrowRight, ArrowLeft, Play, TrendingUp, Building2, Users, Zap, Target, Mail, Phone, Globe, Camera, Search, Package, Bell } from 'lucide-react'
+
+const slides = [
+  // Slide 1: Cover
+  {
+    id: 'cover',
+    header: 'ZENASSET',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="mb-8">
+            <h1 className="text-[5rem] leading-[1] font-light text-black mb-4">
+              ZenAsset
+            </h1>
+            <div className="w-32 h-1 bg-orange-500 mx-auto mb-8"></div>
+            <p className="text-2xl text-gray-700 font-light mb-4">
+              AI-Powered Lost & Found Platform
+            </p>
+            <p className="text-lg text-gray-500 tracking-wide uppercase">
+              AI-Assisted Venue Service OS
+            </p>
+          </div>
+          
+          <div className="mt-20 flex justify-center gap-12 text-gray-600">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-5 h-5" />
+              <span>Venue Management</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-orange-500" />
+              <span>AI Automation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              <span>Guest Experience</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 2: Industry Overview
+  {
+    id: 'industry',
+    header: 'INDUSTRY',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            INDUSTRY OVERVIEW
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            Massive opportunity in venue services
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-8 mb-12">
+            <div className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+              <p className="text-4xl font-light text-black mb-2">$0.1B</p>
+              <p className="text-sm font-medium text-gray-700 mb-1">Lost & Found Software</p>
+              <p className="text-xs text-gray-500">2024 Market Size</p>
+              <div className="mt-4 flex items-center justify-center gap-2 text-orange-500">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">9.5% CAGR</span>
+              </div>
+            </div>
+            
+            <div className="text-center p-6 bg-white rounded-2xl border-2 border-orange-500">
+              <p className="text-4xl font-light text-orange-500 mb-2">$8.5B</p>
+              <p className="text-sm font-medium text-gray-700 mb-1">Venue Management</p>
+              <p className="text-xs text-gray-500">2024 Market Size</p>
+              <div className="mt-4 flex items-center justify-center gap-2 text-gray-700">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">12% CAGR → $18B by 2030</span>
+              </div>
+            </div>
+            
+            <div className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+              <p className="text-4xl font-light text-black mb-2">70-100</p>
+              <p className="text-sm font-medium text-gray-700 mb-1">Items per Event</p>
+              <p className="text-xs text-gray-500">Major Sports Venues</p>
+              <div className="mt-4 text-gray-600">
+                <span className="text-sm font-medium">Single venue scale</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-black text-white rounded-2xl">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <p className="text-2xl font-light mb-1">2025-2033</p>
+                <p className="text-xs text-gray-400">Growth Period</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-orange-400 mb-1">$34.7B</p>
+                <p className="text-xs text-gray-400">Event Management by 2029</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light mb-1">20-100</p>
+                <p className="text-xs text-gray-400">Major airports daily items</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 3: The Problem - Community Feedback
+  {
+    id: 'problem',
+    header: 'PROBLEM',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            THE PROBLEM
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            Real venues, real frustrations
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <div className="bg-gray-50 rounded-2xl p-6">
+              <h3 className="text-lg font-medium text-black mb-4">Community Voice</h3>
+              <div className="space-y-3">
+                <div className="p-3 bg-white rounded-xl border border-gray-200">
+                  <p className="text-sm text-gray-700 italic">"SoFi Stadium won't return calls for days"</p>
+                  <p className="text-xs text-gray-500 mt-1">- r/AskLosAngeles, 2024</p>
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-gray-200">
+                  <p className="text-sm text-gray-700 italic">"Footprint Center hotline went nowhere"</p>
+                  <p className="text-xs text-gray-500 mt-1">- r/suns, 2024</p>
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-gray-200">
+                  <p className="text-sm text-gray-700 italic">"Steelers stadium process is terrible"</p>
+                  <p className="text-xs text-gray-500 mt-1">- r/steelers, 2024</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-black text-white rounded-2xl p-6">
+              <h3 className="text-lg font-medium mb-4">5 Key Pain Points</h3>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">1.</span>
+                  <span>Response time: Days or never</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">2.</span>
+                  <span>Multiple channels, no unity</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">3.</span>
+                  <span>Status completely opaque</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">4.</span>
+                  <span>Verification takes forever</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">5.</span>
+                  <span>No tracking or follow-up</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-6 text-center">
+            <div className="p-4 bg-orange-50 rounded-xl">
+              <p className="text-2xl font-light text-orange-500 mb-1">70-100</p>
+              <p className="text-xs text-gray-600">Items per event</p>
+            </div>
+            <div className="p-4 bg-orange-50 rounded-xl">
+              <p className="text-2xl font-light text-orange-500 mb-1">15%</p>
+              <p className="text-xs text-gray-600">Return rate</p>
+            </div>
+            <div className="p-4 bg-orange-50 rounded-xl">
+              <p className="text-2xl font-light text-orange-500 mb-1">45 min</p>
+              <p className="text-xs text-gray-600">Per search</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 4: Solution
+  {
+    id: 'solution',
+    header: 'SOLUTION',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            OUR SOLUTION
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            AI-native approach to lost & found
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-6 mb-12">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-500 text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Camera className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">Instant Capture</h3>
+              <p className="text-sm text-gray-600">Photo → AI → Database</p>
+              <p className="text-xs text-orange-500 font-medium mt-2">Under 30 seconds</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-black text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Search className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">Smart Matching</h3>
+              <p className="text-sm text-gray-600">Natural language AI search</p>
+              <p className="text-xs text-orange-500 font-medium mt-2">94% accuracy</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-500 text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Bell className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">Instant Claims</h3>
+              <p className="text-sm text-gray-600">Digital verification & pickup</p>
+              <p className="text-xs text-orange-500 font-medium mt-2">Real-time notifications</p>
+            </div>
+          </div>
+
+          <div className="bg-black text-white rounded-2xl p-8">
+            <h3 className="text-xl font-medium mb-6">Breakthrough Performance</h3>
+            <div className="grid grid-cols-4 gap-6 text-center">
+              <div>
+                <p className="text-3xl font-light text-orange-400 mb-1">10x</p>
+                <p className="text-xs text-gray-400">Faster logging</p>
+              </div>
+              <div>
+                <p className="text-3xl font-light mb-1">6x</p>
+                <p className="text-xs text-gray-400">Better matching</p>
+              </div>
+              <div>
+                <p className="text-3xl font-light mb-1">85%</p>
+                <p className="text-xs text-gray-400">Target return rate</p>
+              </div>
+              <div>
+                <p className="text-3xl font-light text-orange-400 mb-1">$0</p>
+                <p className="text-xs text-gray-400">Training needed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 5: Product Demo
+  {
+    id: 'demo',
+    header: 'DEMO',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            PRODUCT DEMO
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            See it in action
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="p-6 bg-white border-2 border-orange-500 rounded-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold">
+                    1
+                  </div>
+                  <h3 className="text-lg font-medium">Staff Flow</h3>
+                </div>
+                <p className="text-sm text-gray-600 ml-16">Tap camera → Capture item → AI fills form → Save</p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 rounded-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gray-200 text-gray-700 rounded-xl flex items-center justify-center font-bold">
+                    2
+                  </div>
+                  <h3 className="text-lg font-medium">AI Processing</h3>
+                </div>
+                <p className="text-sm text-gray-600 ml-16">Gemini 2.5 extracts: category, brand, color, features</p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 rounded-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gray-200 text-gray-700 rounded-xl flex items-center justify-center font-bold">
+                    3
+                  </div>
+                  <h3 className="text-lg font-medium">Guest Flow</h3>
+                </div>
+                <p className="text-sm text-gray-600 ml-16">Natural language search → AI chat → Instant match</p>
+              </div>
+            </div>
+            
+            <div className="bg-black rounded-2xl p-8 text-white">
+              <h3 className="text-xl font-medium mb-6">Live Metrics</h3>
+              <div className="space-y-6">
+                <div className="flex justify-between items-center pb-4 border-b border-gray-800">
+                  <span className="text-gray-400">Processing time</span>
+                  <span className="text-2xl font-light text-orange-400">28 sec</span>
+                </div>
+                <div className="flex justify-between items-center pb-4 border-b border-gray-800">
+                  <span className="text-gray-400">AI accuracy</span>
+                  <span className="text-2xl font-light">94%</span>
+                </div>
+                <div className="flex justify-between items-center pb-4 border-b border-gray-800">
+                  <span className="text-gray-400">Vector matching</span>
+                  <span className="text-2xl font-light">Jina v4</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">User effort</span>
+                  <span className="text-2xl font-light text-green-400">3 taps</span>
+                </div>
+              </div>
+              
+              <div className="mt-8 p-4 bg-orange-500/20 border border-orange-500/50 rounded-xl">
+                <p className="text-sm text-orange-300 text-center">
+                  Live demo available at zenasset.io/demo
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 6: Market Size & Expansion Path
+  {
+    id: 'market',
+    header: 'MARKET',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            MARKET SIZE & EXPANSION PATH
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            From $0.1B niche to $8.5B opportunity
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="bg-orange-50 rounded-2xl p-6 border-2 border-orange-500">
+              <p className="text-sm font-medium text-gray-600 mb-2">Phase 1: Entry</p>
+              <p className="text-3xl font-light text-orange-500 mb-3">$0.1B</p>
+              <p className="text-sm font-medium text-gray-900 mb-2">Lost & Found Software</p>
+              <p className="text-xs text-gray-600">2024 Market Size</p>
+              <p className="text-xs text-orange-500 font-medium mt-3">9.5% CAGR</p>
+            </div>
+            
+            <div className="bg-gray-50 rounded-2xl p-6">
+              <p className="text-sm font-medium text-gray-600 mb-2">Phase 2: Expand</p>
+              <p className="text-3xl font-light text-black mb-3">$8.5B</p>
+              <p className="text-sm font-medium text-gray-900 mb-2">Venue Management</p>
+              <p className="text-xs text-gray-600">2024 Market Size</p>
+              <p className="text-xs text-gray-700 font-medium mt-3">12% CAGR → $18B by 2030</p>
+            </div>
+            
+            <div className="bg-black text-white rounded-2xl p-6">
+              <p className="text-sm font-medium text-gray-400 mb-2">Phase 3: Platform</p>
+              <p className="text-3xl font-light text-orange-400 mb-3">$1B+</p>
+              <p className="text-sm font-medium mb-2">Venue Operations</p>
+              <p className="text-xs text-gray-400">Year 5+ Target</p>
+              <p className="text-xs text-orange-400 font-medium mt-3">Beyond L&F</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <h3 className="text-lg font-medium text-black mb-4">Expansion Strategy</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-sm">1</div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900 text-sm">Lost & Found Core (Now)</p>
+                  <p className="text-xs text-gray-600">AI capture, matching, claims → Prove ROI with 50% higher return rates</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gray-100 text-gray-600 rounded-xl flex items-center justify-center font-bold text-sm">2</div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900 text-sm">Adjacent Services (Year 3-4)</p>
+                  <p className="text-xs text-gray-600">Incident reports, asset tracking, visitor badges → Expand within venues</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-sm">3</div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900 text-sm">Platform Vision (Year 5+)</p>
+                  <p className="text-xs text-gray-600">Full venue operations suite → Long-term opportunity</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-xl">
+            <p className="text-center text-gray-700 text-sm">
+              <span className="font-medium">Navy Pier case:</span> Crowdfind implementation → 50% increase in return rate
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 7: Venue Landscape
+  {
+    id: 'venues',
+    header: 'VENUES',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            VENUE LANDSCAPE
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            100,000+ venues globally
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <div className="bg-gray-50 rounded-2xl p-8">
+              <h3 className="text-xl font-medium text-black mb-6">Total Addressable Venues</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Sports Stadiums & Arenas</span>
+                  <span className="font-medium text-black">30,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Convention Centers</span>
+                  <span className="font-medium text-black">5,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Theme Parks & Attractions</span>
+                  <span className="font-medium text-black">4,500</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Major Airports</span>
+                  <span className="font-medium text-black">5,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Universities & Campuses</span>
+                  <span className="font-medium text-black">20,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Hotels (Premium)</span>
+                  <span className="font-medium text-black">50,000</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-black text-white rounded-2xl p-8">
+              <h3 className="text-xl font-medium mb-6">Phase 1 Focus: Local Stadiums</h3>
+              <div className="space-y-6">
+                <div>
+                  <p className="text-2xl font-light text-orange-400 mb-2">500</p>
+                  <p className="text-sm text-gray-400">Major league stadiums in US</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-light mb-2">20-100</p>
+                  <p className="text-sm text-gray-400">Items lost per game</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-light mb-2">162-82</p>
+                  <p className="text-sm text-gray-400">Games per season</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-light text-orange-400 mb-2">$25M</p>
+                  <p className="text-sm text-gray-400">TAM for US stadiums alone</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-orange-50 border border-orange-200 rounded-2xl">
+            <p className="text-center text-gray-700">
+              <span className="font-medium">Year 1 Target:</span> 10 local stadiums → Year 2: 50 regional venues → Year 3: 200 national accounts
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 8: Business Model
+  {
+    id: 'business',
+    header: 'PRICING',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            BUSINESS MODEL
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            Tiered SaaS with immediate ROI
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-6 mb-12">
+            <div className="p-6 bg-gray-50 rounded-2xl">
+              <h3 className="text-lg font-medium text-gray-900 mb-1">Starter</h3>
+              <p className="text-3xl font-light text-black mb-1">$200<span className="text-lg text-gray-500">/mo</span></p>
+              <p className="text-xs text-gray-600 mb-3">$2,400/year</p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• Up to 10,000 items/year</li>
+                <li>• 5 staff accounts</li>
+                <li>• AI-powered matching</li>
+                <li>• Voice & photo intake</li>
+                <li>• Email notifications</li>
+              </ul>
+              <p className="mt-4 text-xs text-orange-500 font-medium">Small venues</p>
+            </div>
+            
+            <div className="p-6 bg-orange-500 text-white rounded-2xl">
+              <h3 className="text-lg font-medium mb-1">Professional</h3>
+              <p className="text-3xl font-light mb-1">$500<span className="text-lg opacity-80">/mo</span></p>
+              <p className="text-xs opacity-90 mb-3">$6,000/year</p>
+              <ul className="space-y-2 text-sm">
+                <li>• Up to 50,000 items/year</li>
+                <li>• Unlimited staff</li>
+                <li>• Advanced AI matching</li>
+                <li>• Multi-language support</li>
+                <li>• Custom branding</li>
+                <li>• Analytics dashboard</li>
+              </ul>
+              <p className="mt-4 text-xs font-medium">Most stadiums</p>
+            </div>
+            
+            <div className="p-6 bg-black text-white rounded-2xl">
+              <h3 className="text-lg font-medium mb-1">Enterprise</h3>
+              <p className="text-3xl font-light mb-1">Custom</p>
+              <p className="text-xs text-gray-400 mb-3">Starting at $1,000/mo</p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>• Unlimited everything</li>
+                <li>• Multi-location</li>
+                <li>• API integration</li>
+                <li>• White label option</li>
+                <li>• Dedicated support</li>
+              </ul>
+              <p className="mt-4 text-xs text-gray-500">Chains & airports</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-2xl p-8">
+            <h3 className="text-xl font-medium text-black mb-6">Unit Economics</h3>
+            <div className="grid grid-cols-4 gap-6 text-center">
+              <div>
+                <p className="text-2xl font-light text-orange-500 mb-1">$500</p>
+                <p className="text-sm text-gray-700">Average MRR</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">85%</p>
+                <p className="text-sm text-gray-700">Gross margin</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">$1,500</p>
+                <p className="text-sm text-gray-700">CAC target</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-orange-500 mb-1">3 months</p>
+                <p className="text-sm text-gray-700">Payback period</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 9: Go-to-Market
+  {
+    id: 'gtm',
+    header: 'GTM',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            GO-TO-MARKET
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            Land and expand strategy
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-8 mb-12">
+            <div className="space-y-6">
+              <div className="p-6 bg-orange-50 rounded-2xl">
+                <h3 className="text-lg font-medium text-black mb-4">Phase 1: Local Venues</h3>
+                <p className="text-sm text-gray-700 mb-3">Start with smaller local venues</p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li>• Minor league stadiums</li>
+                  <li>• College arenas</li>
+                  <li>• Concert halls</li>
+                  <li>• Community centers</li>
+                </ul>
+                <p className="text-xs text-orange-500 font-medium mt-3">Q3-Q4 2025</p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 rounded-2xl">
+                <h3 className="text-lg font-medium text-black mb-4">Phase 2: Major Venues</h3>
+                <p className="text-sm text-gray-700 mb-3">Scale to premier venues</p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li>• MLB/NBA/NFL stadiums</li>
+                  <li>• Major convention centers</li>
+                  <li>• International airports</li>
+                </ul>
+                <p className="text-xs text-gray-500 font-medium mt-3">2026 and beyond</p>
+              </div>
+            </div>
+            
+            <div className="bg-black text-white rounded-2xl p-8">
+              <h3 className="text-xl font-medium mb-6">Sales Strategy</h3>
+              <div className="space-y-6">
+                <div>
+                  <p className="font-medium text-orange-400 mb-2">Guest Experience Focus</p>
+                  <p className="text-sm text-gray-400">Drive adoption through superior guest satisfaction & reviews</p>
+                </div>
+                <div>
+                  <p className="font-medium mb-2">Direct Sales</p>
+                  <p className="text-sm text-gray-400">Target venue managers emphasizing guest experience metrics</p>
+                </div>
+                <div>
+                  <p className="font-medium mb-2">Channel Partners</p>
+                  <p className="text-sm text-gray-400">Venue consultants focused on customer satisfaction</p>
+                </div>
+                <div>
+                  <p className="font-medium mb-2">Product-Led Growth</p>
+                  <p className="text-sm text-gray-400">Free trial showcasing immediate guest impact</p>
+                </div>
+              </div>
+              
+              <div className="mt-8 p-4 bg-orange-500/20 border border-orange-500/50 rounded-xl">
+                <p className="text-sm text-orange-300">
+                  Target: 100 venues in Year 1, 1000+ by Year 3
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-gray-50 rounded-2xl">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <p className="text-2xl font-light text-orange-500 mb-1">30 days</p>
+                <p className="text-sm text-gray-700">Free trial period</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">2 hours</p>
+                <p className="text-sm text-gray-700">Setup time</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">Day 1</p>
+                <p className="text-sm text-gray-700">Value realization</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 10: Competitive Advantage
+  {
+    id: 'competitive',
+    header: 'COMPETITION',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            COMPETITIVE ADVANTAGE
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            First AI-native solution in the market
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-6 mb-12">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-500 text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Zap className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">Speed Advantage</h3>
+              <p className="text-sm text-gray-600">30-second capture vs 5-10 minutes manual</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-black text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Target className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">AI Accuracy</h3>
+              <p className="text-sm text-gray-600">94% match rate vs 15% manual</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-500 text-white rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <Building2 className="w-10 h-10" />
+              </div>
+              <h3 className="font-medium text-black mb-2">Venue-First</h3>
+              <p className="text-sm text-gray-600">Purpose-built, not retrofitted</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-2xl p-8">
+            <h3 className="text-xl font-medium text-black mb-6">Competitive Landscape</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-white rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Paper/Excel (47% of venues)</p>
+                  <p className="text-sm text-gray-600">Manual logs, phone calls, no search</p>
+                </div>
+                <span className="text-sm font-medium text-red-500">15% return rate</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-white rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Crowdfind/Pixit</p>
+                  <p className="text-sm text-gray-600">Photo database + basic search</p>
+                </div>
+                <span className="text-sm font-medium text-yellow-600">30% return rate</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-white rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Generic inventory (Foundspot)</p>
+                  <p className="text-sm text-gray-600">Not built for guest experience</p>
+                </div>
+                <span className="text-sm font-medium text-yellow-600">Complex setup</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-orange-50 border-2 border-orange-500 rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">ZenAsset</p>
+                  <p className="text-sm text-gray-600">AI-native, 30-second capture, natural chat</p>
+                </div>
+                <span className="text-sm font-medium text-green-600">50%+ target</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 11: Roadmap & Next Steps
+  {
+    id: 'roadmap',
+    header: 'ROADMAP',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-sm font-medium tracking-[0.3em] text-gray-500 mb-8">
+            ROADMAP & NEXT STEPS
+          </div>
+          <h2 className="text-[3rem] leading-[1.2] font-light text-black mb-12">
+            18-month path to market leadership
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <div className="bg-gray-50 rounded-2xl p-6">
+              <h3 className="text-lg font-medium text-black mb-4">Q3-Q4 2025</h3>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <div className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">✓</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Complete prototype</p>
+                    <p className="text-xs text-gray-600">Core AI features working</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-5 h-5 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs">→</div>
+                  <div>
+                    <p className="font-medium text-gray-900">5 pilot venues</p>
+                    <p className="text-xs text-gray-600">Validate product-market fit</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-5 h-5 bg-gray-300 text-white rounded-full flex items-center justify-center text-xs">○</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Batch processing module</p>
+                    <p className="text-xs text-gray-600">Handle 100+ items/day</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="bg-black text-white rounded-2xl p-6">
+              <h3 className="text-lg font-medium mb-4">2026</h3>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">•</span>
+                  <div>
+                    <p className="font-medium">Scale to 50 venues</p>
+                    <p className="text-xs text-gray-400">Expand to major stadiums</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">•</span>
+                  <div>
+                    <p className="font-medium">Multi-language support</p>
+                    <p className="text-xs text-gray-400">Spanish, Chinese, French</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-400">•</span>
+                  <div>
+                    <p className="font-medium">API & integrations</p>
+                    <p className="text-xs text-gray-400">Connect to venue systems</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-orange-50 rounded-2xl p-6">
+            <h3 className="text-lg font-medium text-black mb-4">Why Now?</h3>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-light text-orange-500 mb-1">AI Ready</p>
+                <p className="text-xs text-gray-600">LLMs finally accurate enough</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">47% Paper</p>
+                <p className="text-xs text-gray-600">Market ripe for disruption</p>
+              </div>
+              <div>
+                <p className="text-2xl font-light text-black mb-1">Post-COVID</p>
+                <p className="text-xs text-gray-600">Venues need efficiency</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  // Slide 12: Contact
+  {
+    id: 'contact',
+    header: 'CONTACT',
+    content: (
+      <div className="h-full flex flex-col justify-center">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-[4rem] leading-[1] font-light text-black mb-8">
+            Let's Transform Lost & Found
+          </h2>
+          
+          <div className="w-32 h-1 bg-orange-500 mx-auto mb-12"></div>
+          
+          <div className="space-y-6 mb-12">
+            <div className="flex items-center justify-center gap-4">
+              <Globe className="w-6 h-6 text-orange-500" />
+              <span className="text-xl text-gray-700">zenasset.io</span>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <Mail className="w-6 h-6 text-orange-500" />
+              <span className="text-xl text-gray-700">contact@zenasset.io</span>
+            </div>
+          </div>
+
+          <div className="p-8 bg-gray-50 rounded-2xl mb-8">
+            <p className="text-lg text-gray-700 mb-4">
+              Schedule a demo to see the future of venue operations
+            </p>
+            <p className="text-gray-500">
+              15-minute demo • ROI calculator • Pilot program available
+            </p>
+          </div>
+
+          <div className="flex justify-center gap-8 text-gray-600">
+            <div className="flex items-center gap-2">
+              <Camera className="w-5 h-5 text-orange-500" />
+              <span>Live Demo Ready</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-orange-500" />
+              <span>94% Accuracy</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-orange-500" />
+              <span>30 Second Setup</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+]
+
+export default function PitchDeck() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isPresenting, setIsPresenting] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault()
+        setCurrentSlide((prev) => {
+          if (prev < slides.length - 1) {
+            return prev + 1
+          }
+          return prev
+        })
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        setCurrentSlide((prev) => Math.max(prev - 1, 0))
+      } else if (e.key === 'Escape') {
+        if (document.fullscreenElement) {
+          document.exitFullscreen()
+        }
+        setIsPresenting(false)
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await containerRef.current?.requestFullscreen()
+        setIsPresenting(true)
+      } else {
+        await document.exitFullscreen()
+        setIsPresenting(false)
+      }
+    } catch (err) {
+      console.error('Error attempting to toggle fullscreen:', err)
+    }
+  }
+
+  return (
+    <div 
+      ref={containerRef}
+      className={`${
+        isPresenting 
+          ? 'fixed inset-0 z-50 bg-white' 
+          : 'min-h-screen bg-white'
+      }`}
+    >
+      {/* Navigation */}
+      {!isPresenting && (
+        <div className="fixed top-8 right-8 z-40 flex items-center gap-4">
+          <button
+            onClick={toggleFullscreen}
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+          >
+            <Play className="w-4 h-4" />
+            Fullscreen
+          </button>
+        </div>
+      )}
+
+      {/* Header */}
+      {slides[currentSlide].header && (
+        <div className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-gray-200 z-30">
+          <div className="h-full max-w-7xl mx-auto px-16 flex items-center justify-between">
+            <div className="flex items-center gap-8">
+              <div
+                className="text-3xl font-light tracking-tight"
+                style={{ 
+                  fontFamily: "'Raleway', sans-serif",
+                  background: "linear-gradient(135deg, #EA580C 0%, #DC2626 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text"
+                }}
+              >
+                ZenAsset
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-500">{slides[currentSlide].header}</span>
+                <div className="flex items-center gap-1">
+                  {slides.map((slide, index) => (
+                    <div key={index} className="flex items-center gap-1">
+                      <div
+                        className={`h-1 transition-all ${
+                          index === currentSlide 
+                            ? 'w-6 bg-orange-500' 
+                            : index < currentSlide
+                            ? 'w-3 bg-orange-300'
+                            : 'w-3 bg-gray-300'
+                        }`}
+                      />
+                      {index < slides.length - 1 && (
+                        <span className="text-[8px] text-gray-400 mx-0.5">•</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-500">
+              {currentSlide + 1} / {slides.length}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Slide Content */}
+      <div className={`h-screen px-16 ${slides[currentSlide].header ? 'pt-32 pb-12' : 'py-12'}`}>
+        {slides[currentSlide].content}
+      </div>
+
+
+    </div>
+  )
+}

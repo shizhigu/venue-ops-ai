@@ -1,0 +1,33 @@
+# Core dependencies
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+
+# LangGraph (latest)
+langgraph==0.6.6
+langchain-core>=0.3.67
+
+# OpenRouter integration (using OpenAI SDK compatibility)
+openai==1.57.4
+httpx==0.28.0
+
+# Database
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+psycopg2-binary==2.9.10
+
+# Redis for state management
+redis==5.2.0
+
+# File handling
+pillow==11.0.0
+
+# Utilities
+pydantic==2.10.3
+pydantic-settings==2.6.1
+python-dotenv==1.0.1
+structlog==24.4.0
+
+# Development
+pytest==8.3.4
+pytest-asyncio==0.24.0

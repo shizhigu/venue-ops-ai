@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  langgraph:
+    build: .
+    container_name: venue-ops-langgraph
+    ports:
+      - "8001:8001"
+    environment:
+      - APP_ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ./app:/app/app
+      - upload_data:/tmp/venue-ops/uploads
+    networks:
+      - venue-ops-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: venue-ops-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - venue-ops-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: venue-ops-postgres
+    environment:
+      - POSTGRES_USER=venue_ops
+      - POSTGRES_PASSWORD=venue_ops_password
+      - POSTGRES_DB=venue_ops
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - venue-ops-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  upload_data:
+
+networks:
+  venue-ops-network:
+    driver: bridge

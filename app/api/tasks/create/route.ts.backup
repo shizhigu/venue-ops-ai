@@ -1,0 +1,127 @@
+import { NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
+import { sql } from '@/lib/db'
+
+export async function POST(req: Request) {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 获取用户信息
+    const userResult = await sql`
+      SELECT id, venue_id, name
+      FROM users
+      WHERE clerk_user_id = ${userId}
+        AND is_active = true
+      LIMIT 1
+    `
+
+    if (userResult.length === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const user = userResult[0]
+    const taskData = await req.json()
+
+    // 创建任务
+    const result = await sql`
+      INSERT INTO tasks (
+        venue_id,
+        reporter_id,
+        status,
+        created_at,
+        data,
+        ai_context
+      ) VALUES (
+        ${user.venue_id},
+        ${user.id},
+        'pending',
+        NOW(),
+        ${JSON.stringify(taskData)},
+        ${JSON.stringify({
+          source: 'mobile_app',
+          reporter_name: user.name,
+          auto_analysis: true,
+          created_via: 'quick_report'
+        })}
+      )
+      RETURNING id, created_at
+    `
+
+    const task = result[0]
+
+    // 记录事件
+    await sql`
+      INSERT INTO events (
+        venue_id,
+        type,
+        severity,
+        actor_id,
+        target_type,
+        target_id,
+        data
+      ) VALUES (
+        ${user.venue_id},
+        'task_created',
+        ${taskData.priority >= 4 ? 'warning' : 'info'},
+        ${user.id},
+        'task',
+        ${task.id},
+        ${JSON.stringify({
+          source: 'employee_report',
+          trigger: taskData.voice_url ? 'voice_and_photo' : 'photo_only',
+          has_ai_analysis: !!taskData.ai_analysis,
+          location: taskData.location
+        })}
+      )
+    `
+
+    // 如果是紧急任务，触发自动分配
+    if (taskData.priority >= 4) {
+      // 这里可以添加自动分配逻辑
+      // 比如找最近的空闲员工，或者通知管理员
+      
+      // 模拟自动分配
+      await sql`
+        INSERT INTO events (
+          venue_id,
+          type,
+          severity,
+          target_type,
+          target_id,
+          data
+        ) VALUES (
+          ${user.venue_id},
+          'ai_decision',
+          'warning',
+          'task',
+          ${task.id},
+          ${JSON.stringify({
+            decision: 'auto_escalate',
+            reason: 'high_priority_issue',
+            actions: ['notify_manager', 'find_nearest_worker']
+          })}
+        )
+      `
+    }
+
+    return NextResponse.json({
+      success: true,
+      taskId: task.id,
+      createdAt: task.created_at,
+      message: taskData.priority >= 4 
+        ? 'Urgent task created. Auto-assigning staff...'
+        : 'Task created successfully. Will be handled soon.'
+    })
+
+  } catch (error) {
+    console.error('Error creating task:', error)
+    return NextResponse.json(
+      { error: 'Failed to create task' },
+      { status: 500 }
+    )
+  }
+}

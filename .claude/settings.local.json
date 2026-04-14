@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(kill:*)",
+      "Bash(psql:*)",
+      "Bash(npx shadcn@latest add switch:*)",
+      "Bash(chmod:*)",
+      "WebSearch",
+      "Bash(python3:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)",
+      "Bash(cat:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:langchain-ai.github.io)",
+      "WebFetch(domain:ai-sdk.dev)",
+      "WebFetch(domain:sdk.vercel.ai)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  }
+}

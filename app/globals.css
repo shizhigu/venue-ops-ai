@@ -1,0 +1,718 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --text-tertiary: #9CA3AF;
+    --text-brand: #EA580C;
+    --text-success: #059669;
+    --text-error: #DC2626;
+    --brand-color: #FF6B35;
+    --brand-secondary: #FFE5DB;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: white;
+    color: var(--text-primary);
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 
+                 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 
+                 'Helvetica Neue', sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(255, 107, 53, 0.1); /* brand color with 10% opacity */
+    color: var(--text-brand);
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer components {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    max-width: 80rem;
+  }
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* 标题字体系统 - 精确匹配设计规范 */
+  
+  /* H1 - 主标题 */
+  .h1, h1 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700; /* Bold */
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.02em;
+    color: inherit; /* 继承父元素颜色，而不是强制深色 */
+  }
+
+  /* H2 - 副标题 */
+  .h2, h2 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600; /* SemiBold */
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -0.01em;
+    color: inherit; /* 继承父元素颜色，而不是强制深色 */
+  }
+
+  /* H3 - 三级标题 */
+  .h3, h3 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600; /* SemiBold */
+    font-size: 24px;
+    line-height: 32px;
+    color: inherit; /* 继承父元素颜色，而不是强制深色 */
+  }
+
+  /* H4 - 四级标题 */
+  .h4, h4 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500; /* Medium */
+    font-size: 20px;
+    line-height: 28px;
+    color: inherit; /* 继承父元素颜色，而不是强制深色 */
+  }
+
+  /* 正文字体系统 */
+  
+  /* 大号正文 - Landing page主要内容 */
+  .text-lg-custom, .body-large {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--text-secondary);
+  }
+
+  /* 标准正文 - 产品界面 */
+  .text-base-custom, .body-base {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--text-secondary);
+  }
+
+  /* 小号正文 - 说明文字 */
+  .text-sm-custom, .body-small {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-tertiary);
+  }
+
+  /* 辅助文字 - 标签、时间戳 */
+  .text-xs-custom, .caption {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* 数据显示字体 */
+  .data-display {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* 响应式标题 - 使用 clamp() */
+  .h1-responsive {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .h2-responsive {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .h3-responsive {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: clamp(20px, 3vw, 24px);
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  /* 移动端优化 */
+  @media (max-width: 640px) {
+    .h1, h1 {
+      font-size: 32px;
+      line-height: 40px;
+      font-weight: 700; /* 小屏幕加重 */
+    }
+
+    .h2, h2 {
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 600;
+    }
+
+    .h3, h3 {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 600;
+    }
+
+    .h4, h4 {
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    /* 移动端最小字体16px */
+    .body-small, .text-sm-custom {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .caption, .text-xs-custom {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* 移动端行高至少1.4 */
+    p, .body-base, .body-large {
+      line-height: 1.5;
+    }
+  }
+
+  /* 特殊用途的超大标题 */
+  .display-1 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 8vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+
+  .display-2 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    font-size: clamp(40px, 6vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  /* Button Styles - 匹配字体系统 */
+  .btn {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 200ms;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .btn-md {
+    padding: 0.75rem 1.5rem;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .btn-primary {
+    background-color: hsl(var(--primary));
+    color: white;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .btn-primary:hover {
+    background-color: #1f2937;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-brand {
+    background-color: var(--brand-color);
+    color: white;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .btn-brand:hover {
+    background-color: #c2410c;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-outline {
+    background-color: white;
+    color: var(--text-primary);
+    border: 2px solid #e5e7eb;
+  }
+  .btn-outline:hover {
+    border-color: #d1d5db;
+    background-color: #f9fafb;
+  }
+
+  /* Card Styles */
+  .card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 200ms;
+  }
+  @media (min-width: 1024px) {
+    .card {
+      padding: 2rem;
+    }
+  }
+
+  .card-bordered {
+    border: 1px solid #e5e7eb;
+  }
+  .card-bordered:hover {
+    border-color: #d1d5db;
+  }
+
+  .card-shadow {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  .card-shadow:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  /* Badge Styles */
+  .badge {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  .badge-primary {
+    background-color: #f3f4f6;
+    color: var(--text-primary);
+  }
+
+  .badge-brand {
+    background-color: #fff7ed;
+    color: var(--text-brand);
+  }
+
+  .badge-success {
+    background-color: #f0fdf4;
+    color: var(--text-success);
+  }
+
+  /* Stats Numbers - 使用 JetBrains Mono */
+  .stat-number {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', monospace;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Section Spacing */
+  .section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  .section-compact {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  @media (min-width: 1024px) {
+    .section-compact {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+
+  /* Utility Classes */
+  .font-montserrat {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .font-mono-custom {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', monospace;
+  }
+
+  /* 深色背景自动文字颜色调整 - 使用更柔和的颜色层次 */
+  .dark-bg, 
+  [class*="bg-gray-9"], 
+  [class*="bg-gray-8"],
+  [class*="bg-black"],
+  .bg-gradient-to-br.from-gray-900,
+  .bg-gradient-to-r.from-gray-900,
+  .bg-gradient-to-br.from-black {
+    color: #E5E7EB; /* gray-200 - 柔和的浅灰色，不刺眼 */
+  }
+  
+  /* 标题使用稍亮的颜色以突出层次 */
+  .dark-bg h1, .dark-bg h2, .dark-bg h3, .dark-bg h4,
+  [class*="bg-gray-9"] h1, [class*="bg-gray-9"] h2, [class*="bg-gray-9"] h3, [class*="bg-gray-9"] h4,
+  [class*="bg-gray-8"] h1, [class*="bg-gray-8"] h2, [class*="bg-gray-8"] h3, [class*="bg-gray-8"] h4,
+  [class*="bg-black"] h1, [class*="bg-black"] h2, [class*="bg-black"] h3, [class*="bg-black"] h4 {
+    color: #F3F4F6 !important; /* gray-100 - 标题稍亮但不是纯白 */
+  }
+  
+  /* 主要正文内容 */
+  .dark-bg p, .dark-bg span, .dark-bg div,
+  [class*="bg-gray-9"] p, [class*="bg-gray-9"] span,
+  [class*="bg-gray-8"] p, [class*="bg-gray-8"] span,
+  [class*="bg-black"] p, [class*="bg-black"] span {
+    color: inherit;
+  }
+  
+  /* 次要文字使用更暗的颜色 */
+  .dark-bg .text-secondary, .dark-bg .text-muted, .dark-bg small,
+  [class*="bg-gray-9"] .text-secondary, [class*="bg-gray-9"] .text-muted,
+  [class*="bg-gray-8"] .text-secondary, [class*="bg-gray-8"] .text-muted,
+  [class*="bg-black"] .text-secondary, [class*="bg-black"] .text-muted {
+    color: #9CA3AF !important; /* gray-400 - 次要信息 */
+  }
+
+  /* Custom Slider Styles - Cross-browser compatible */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #E5E7EB; /* gray-200 */
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+    position: relative;
+    /* Textured pattern using repeating gradient */
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.1) 2px,
+        rgba(255,255,255,0.1) 4px
+      ),
+      linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 4px 8px rgba(234, 88, 12, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.3),
+      inset 0 -1px 0 rgba(0,0,0,0.2);
+  }
+
+  /* Firefox */
+  input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+    /* Textured pattern using repeating gradient */
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.1) 2px,
+        rgba(255,255,255,0.1) 4px
+      ),
+      linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 4px 8px rgba(234, 88, 12, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.3),
+      inset 0 -1px 0 rgba(0,0,0,0.2);
+  }
+
+  /* Track progress fill effect */
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #E5E7EB;
+    border-radius: 3px;
+  }
+
+  input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #E5E7EB;
+    border-radius: 3px;
+  }
+
+  /* Active state */
+  input[type="range"]:active::-webkit-slider-thumb {
+    transform: translateY(0);
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.2) 2px,
+        rgba(255,255,255,0.2) 4px
+      ),
+      linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  }
+
+  input[type="range"]:active::-moz-range-thumb {
+    transform: translateY(0);
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.2) 2px,
+        rgba(255,255,255,0.2) 4px
+      ),
+      linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  }
+
+  /* Custom Scrollbar Styles */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 100px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(156, 163, 175, 0.5) 0%, rgba(156, 163, 175, 0.3) 100%);
+    border-radius: 100px;
+    transition: all 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(107, 114, 128, 0.6) 0%, rgba(107, 114, 128, 0.4) 100%);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, rgba(75, 85, 99, 0.7) 0%, rgba(75, 85, 99, 0.5) 100%);
+  }
+
+  /* Light scrollbar variant for dark backgrounds */
+  .custom-scrollbar-light {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+
+  .custom-scrollbar-light::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar-light::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 100px;
+  }
+
+  .custom-scrollbar-light::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+    border-radius: 100px;
+    transition: all 0.2s ease;
+  }
+
+  .custom-scrollbar-light::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.3) 100%);
+  }
+
+  .custom-scrollbar-light::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.4) 100%);
+  }
+
+  /* Global scrollbar for main content */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.3);
+    border-radius: 100px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.5);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Metallic shimmer animation for text */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    50% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
+  }
+}
+
+
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
