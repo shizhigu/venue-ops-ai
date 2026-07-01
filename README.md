@@ -1,58 +1,93 @@
+<div align="center">
+
 # Venue Ops AI
 
-> AI-powered venue operations platform replacing walkie-talkies with conversation-driven task management via LangGraph and voice input.
+**A conversational operations layer for large venues: field workers report issues by photo and voice, managers triage and dispatch them by chat.**
 
-## What is this?
+![Next.js 15](https://img.shields.io/badge/Next.js-15-black)
+![React 19](https://img.shields.io/badge/React-19-149eca)
+![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688)
+![LangGraph](https://img.shields.io/badge/LangGraph-agent-1c3c3c)
 
-Venue Ops AI is a full-stack operations platform for stadiums, convention centers, and concert halls with two distinct interfaces. Field workers use a voice-first, camera-first mobile app to report issues (snap photos, record voice memos, let AI analyze and classify). Managers use an AI Deputy chat interface where natural language commands like "Show me urgent tasks in Zone B" or "Assign the plumbing issue to Wang" are interpreted and executed against real database operations.
+</div>
 
-## Why?
+---
 
-I watched venue operations managers drown in radio chatter during events -- the gap between "someone found a problem" and "the right person is fixing it" was measured in tens of minutes when it should be seconds. Every existing tool I evaluated was a glorified ticket system that digitized paperwork but added no intelligence.
+## What it is
 
-## How it works
+Stadiums, convention centers, and concert halls still run day-of operations on walkie-talkies and spreadsheets. A worker finds a burst pipe, radios dispatch, and dispatch tries to find a free plumber who may not hear the call. The manager tracks a dozen issues at once with no view of priority or who is available.
 
-The system implements a dual-layer AI architecture with human-in-the-loop controls at every critical decision point:
+Venue Ops AI has two interfaces over one operations database.
 
-1. **Worker Capture Flow**: Photos and voice memos enter a LangGraph StateGraph pipeline (capture -> analysis -> conditional routing). Claude 3.5 Sonnet via OpenRouter produces structured JSON analysis with issue type, priority, confidence score, suggested tools, and estimated resolution time.
-2. **Two-Step Task Creation**: AI analysis is returned to the worker for review before any database record is created. Only after human confirmation does the system persist the task and trigger notifications.
-3. **AI Deputy (Manager)**: A LangGraph ReAct agent with 5 registered tools (`get_pending_tasks`, `get_task_details`, `assign_task_to_worker`, `get_venue_statistics`, `escalate_to_emergency`) maintains persistent conversation memory per thread via InMemorySaver checkpointing.
-4. **Dual-Layer Conversations**: A Main Deputy Context maintains the global venue view while isolated Task Contexts let managers drill into specific issues without losing the bigger picture.
-5. **Smart Assignment**: Workers are scored using a weighted multi-factor model -- skill match (30%), location proximity (30%), current workload (20%), and historical performance (20%).
-6. **Event-Driven Audit Trail**: PostgreSQL triggers automatically generate `task_status_changed` events on every status update, ensuring complete audit coverage at the database level.
+The worker app lets a field worker snap a photo, record a voice memo, and tag a location. The backend transcribes the audio, runs an AI analysis pass, and returns a draft issue (type, priority, suggested tools, time estimate). Nothing is written until the worker confirms.
 
-## Key Technical Highlights
+The manager AI Deputy is a chat interface. Commands like "show me urgent tasks" or "assign the plumbing issue to Wang" are read by a tool-calling agent that runs the actual database operations and asks for confirmation before anything high-stakes.
 
-- **LangGraph StateGraph + ReAct Agent**: Deterministic multi-step workflows with conditional routing for task processing, plus a tool-calling conversation agent for the manager interface -- both with checkpointed memory.
-- **Human-in-the-Loop at Three Levels**: Workers confirm AI analysis before task creation, managers approve high-priority assignments, and emergency escalations require explicit acknowledgment.
-- **Multi-Tenant Data Isolation**: Every query is scoped by `venue_id` resolved from Clerk organization membership, with PostgreSQL foreign keys and ON DELETE CASCADE enforcing tenant boundaries at the data layer.
+It is a working prototype, not a production system. See [Status](#status).
 
-## Tech Stack
+## Agent design
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Next.js 15, React 19, Tailwind CSS, shadcn/ui |
-| AI Orchestration | LangGraph (StateGraph + ReAct agent) |
-| LLM | Claude 3.5 Sonnet via OpenRouter |
-| Voice-to-Text | Deepgram (Nova-2) |
-| Streaming Chat | Vercel AI SDK (`useChat`) |
-| Auth | Clerk (org-based multi-tenancy) |
-| Backend | FastAPI (Python) |
-| Database | PostgreSQL (Neon) + JSONB + GIN indexes |
-| Infrastructure | Docker Compose (app + Redis + Postgres) |
+The manager side is a tool-calling agent, not a single LLM call. The core is a LangGraph ReAct agent (`create_react_agent`) that decides which tools to call on each turn.
 
-## Quick Start
+Five tools in `langgraph-service/app/agents/deputy_agent.py` run real queries against Postgres: `get_pending_tasks`, `get_task_details`, `assign_task_to_worker`, `get_venue_statistics`, `escalate_to_emergency`. Each returns a structured payload (a display message plus typed data and action buttons) so the chat UI can render task lists, details, or confirmations instead of plain text.
+
+Memory comes from an `InMemorySaver` checkpointer keyed by `thread_id`. Main venue chat uses `venue:{venue_id}`; drilling into an issue opens a separate `venue:{venue_id}:task:{task_id}` thread. Each thread keeps its own history, so a follow-up like "assign the first one to Wang" resolves against the previous turn's tool output.
+
+For the human in the loop, high-priority assignments (`priority >= 4`) and emergency escalations short-circuit: the tool returns a confirmation request with confirm/cancel buttons instead of executing. The confirm click re-invokes the tool with `require_confirmation=False`.
+
+The agent also defaults to doing nothing unless asked. Casual messages ("hi", "thanks") are filtered so it stops treating every input as a database query. That guardrail lives in both the system prompt and the API layer (`app/api/deputy_v2.py`), not one or the other.
+
+The worker capture side is a separate LangGraph `StateGraph` (`app/agents/task_graph.py`): a `capture` node processes images, voice, and location, an `analysis` node calls the model for structured JSON, and a conditional edge routes on the result (emergency and low-confidence cases go to manager review, high-confidence routine cases are marked auto-assignable). State is typed and checkpointed.
+
+A third, lighter tool-calling agent runs inside the Next.js app (`app/api/chat/route.ts`) using the Vercel AI SDK `streamText` with `maxSteps: 3`, for streaming manager chat that queries Neon directly.
+
+## Architecture
+
+Two deployable services talking over REST.
+
+| Layer | What it does | Stack |
+|---|---|---|
+| Frontend | Worker capture, manager dashboards, AI Deputy chat, auth, voice transcription. Acts as a BFF that adds Clerk auth before calling the backend. | Next.js 15, React 19, Tailwind, shadcn/ui |
+| Backend | LangGraph graphs and the ReAct agent, tool execution, all database writes. | FastAPI, LangGraph, LangChain |
+| Model | Analysis and conversation. | Claude 3.5 Sonnet via OpenRouter |
+| Voice | Worker voice memos to text. | Deepgram Nova-2 |
+| Data | Tasks in a JSONB column, append-only `events` audit log, Postgres triggers that log status changes automatically. | Postgres (Neon), Redis |
+| Auth | One Clerk organization per venue; every query is scoped by `venue_id`. | Clerk |
+
+## Quick start
+
+Frontend:
 
 ```bash
-git clone https://github.com/gushizhi/venue-ops-ai.git
+git clone https://github.com/shizhigu/venue-ops-ai.git
 cd venue-ops-ai
-cp .env.local.example .env.local   # Add Clerk, OpenRouter, Deepgram, Neon keys
 npm install
-docker compose up -d               # Start Redis + Postgres
-psql "$DATABASE_URL" < db/venue-ops-schema.sql
-npm run dev                        # Frontend on localhost:3000
+# create .env.local with Clerk, OpenRouter, Deepgram, and Neon keys
+npm run dev            # http://localhost:3000
 ```
+
+Backend (LangGraph service):
+
+```bash
+cd langgraph-service
+pip install -r requirements.txt
+# create .env with OPENROUTER_API_KEY, DATABASE_URL, REDIS_URL
+uvicorn app.main:app --reload --port 8001   # docs at /docs
+```
+
+Database schema, and the local backend stack (app + Redis + Postgres):
+
+```bash
+psql "$DATABASE_URL" -f db/venue-ops-schema.sql
+cd langgraph-service && docker compose up -d
+```
+
+## Status
+
+Advanced prototype. What works end to end: worker capture and AI analysis, the two-step confirm-then-create flow, the AI Deputy ReAct agent with its five tools and per-thread memory, human-in-the-loop confirmation, and the event audit trail with automatic status-change logging.
+
+Rough edges and open work: the task graph currently ends after analysis, so the assignment, execution, and completion stages described in `langgraph-service/ARCHITECTURE.md` are not wired in (the assignment node exists as code but imports helpers that are not in the repo); the analysis cache is in-memory rather than Redis-backed, so Redis is provisioned in Docker Compose but not yet the checkpointer or cache backend; worker dispatch notifications are logged but not delivered; and the vector search over past issues for pattern detection is not built yet. Tests in `langgraph-service/` are ad-hoc scripts that hit a running server, not a `pytest` suite, and there is no CI.
 
 ## License
 
-MIT
+No license file is included and `package.json` declares none, so all rights are reserved by the author by default. Ask before reuse.
